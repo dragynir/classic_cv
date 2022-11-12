@@ -9,6 +9,7 @@ IMAGES = {
         os.path.join(images_path, "simple_edges.JPG"),
     ),
     "shapes": cv2.imread(os.path.join(images_path, "shapes.png")),
+    "lines": cv2.imread(os.path.join(images_path, "zebra.jpg")),
 }
 
 

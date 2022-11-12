@@ -49,6 +49,7 @@ def choose_shape(approx_cnt):
         return 'rectangle'
     elif dots_count > 4:
         return 'circle'
+    # TODO add ellipse
     return 'unknown'
 
 
