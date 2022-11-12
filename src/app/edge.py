@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 import cv2
 
-from morfology import get_relative_size
+from morfology import get_relative_size, get_contours_types
 from image_utils import IMAGES, plot_two_images
 from image_utils import random_color
 
@@ -60,11 +60,15 @@ def create_contours_image(image: np.ndarray, edge_thresholds: Tuple[int, int]):
 
 
 if __name__ == "__main__":
-    image = IMAGES["simple_edges"]
+    image = IMAGES["shapes"]
     edge_result = create_contours_image(image, edge_thresholds=(50, 120))
 
     size_result = get_relative_size(image, edge_result['contours'], area_thresholds=(0, 20, 80, 100))
     print(size_result['relative_sizes'])
 
+    shape_result = get_contours_types(image, edge_result['contours'])
+    print(shape_result['shapes_types'])
+
     plot_two_images(image, edge_result["out_image"])
     plot_two_images(edge_result["edges"], edge_result["contours_image"])
+    plot_two_images(edge_result["contours_image"], shape_result["contours_image"])

@@ -1,12 +1,14 @@
 import cv2
 import matplotlib.pyplot as plt
-import random
+import os
 
+images_path = r'C:\Users\dkoro\PythonProjects\classic_cv\images'
 
 IMAGES = {
     "simple_edges": cv2.imread(
-        r"C:\Users\dkoro\PythonProjects\classic_cv\images\simple_edges.JPG"
+        os.path.join(images_path, "simple_edges.JPG"),
     ),
+    "shapes": cv2.imread(os.path.join(images_path, "shapes.png")),
 }
 
 
