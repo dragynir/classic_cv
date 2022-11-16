@@ -13,10 +13,12 @@ IMAGES = {
 }
 
 
-def plot_two_images(image1, image2, figsize=(13, 13)):
+def plot_two_images(image1, image2, figsize=(13, 13), title=None):
     fig, axs = plt.subplots(1, 2, figsize=figsize)
     axs[0].imshow(image1)
     axs[1].imshow(image2)
+    if title:
+        plt.title(title)
     plt.show()
 
 
