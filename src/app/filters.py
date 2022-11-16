@@ -35,10 +35,10 @@ if __name__ == '__main__':
     image = IMAGES["lines"]
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # for name, config in operations.items():
-    #     op, args = config
-    #     result = apply_filter(image, callable=op, args=args)
-    #     plot_two_images(image, result["out_image"], title=name)
+    for name, config in operations.items():
+        op, args = config
+        result = apply_filter(image, callable=op, args=args)
+        plot_two_images(image, result["out_image"], title=name)
 
     for name, kernel in kernels.items():
         result = apply_filter(gray_image, kernel=kernel)
