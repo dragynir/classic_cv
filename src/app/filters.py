@@ -17,11 +17,13 @@ def apply_filter(image, kernel=None, callable=None, args=None):
     return {'image': image, 'out_image': result}
 
 
-def add_gauss_noise(image: np.ndarray):
-    gauss_noise = np.zeros(image.shape, dtype=np.uint8)
-    gauss_noise = cv2.randn(gauss_noise, 40, 20)
-    gauss_noise = (gauss_noise * 0.5).astype(np.uint8)
-    return image + gauss_noise
+def add_noise(image: np.ndarray, ntype='uniform'):
+    noise = np.zeros(image.shape, dtype=np.uint8)
+    if ntype == 'gauss':
+        noise = cv2.randn(noise, 40, 20)
+    elif ntype == 'uniform':
+        noise = cv2.randu(noise, low=10, high=100)
+    return image + noise
 
 
 if __name__ == '__main__':
@@ -46,7 +48,7 @@ if __name__ == '__main__':
         op, args = config
         input_image = image
         if 'blur' in name:
-            input_image = add_gauss_noise(image)
+            input_image = add_noise(image, ntype='uniform')  # uniform, gauss
 
         result = apply_filter(input_image, callable=op, args=args)
         plot_two_images(input_image, result["out_image"], title=name, cmap='gray')

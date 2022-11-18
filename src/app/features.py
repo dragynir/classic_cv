@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import imutils
 from image_utils import IMAGES, plot_two_images
 
 
