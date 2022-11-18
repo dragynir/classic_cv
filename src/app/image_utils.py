@@ -10,13 +10,14 @@ IMAGES = {
     ),
     "shapes": cv2.imread(os.path.join(images_path, "shapes.png")),
     "lines": cv2.imread(os.path.join(images_path, "zebra.jpg")),
+    "cat": cv2.imread(os.path.join(images_path, "cat.jpg")),
 }
 
 
-def plot_two_images(image1, image2, figsize=(13, 13), title=None):
+def plot_two_images(image1, image2, figsize=(13, 13), title=None, cmap=None):
     fig, axs = plt.subplots(1, 2, figsize=figsize)
-    axs[0].imshow(image1)
-    axs[1].imshow(image2)
+    axs[0].imshow(image1, cmap=cmap)
+    axs[1].imshow(image2, cmap=cmap)
     if title:
         plt.title(title)
     plt.show()

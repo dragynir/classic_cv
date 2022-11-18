@@ -17,6 +17,13 @@ def apply_filter(image, kernel=None, callable=None, args=None):
     return {'image': image, 'out_image': result}
 
 
+def add_gauss_noise(image: np.ndarray):
+    gauss_noise = np.zeros(image.shape, dtype=np.uint8)
+    gauss_noise = cv2.randn(gauss_noise, 40, 20)
+    gauss_noise = (gauss_noise * 0.5).astype(np.uint8)
+    return image + gauss_noise
+
+
 if __name__ == '__main__':
 
     operations = {
@@ -27,19 +34,23 @@ if __name__ == '__main__':
     }
 
     kernels = {
-        'blur': np.ones((3, 3)),
+        'blur': np.ones((5, 5)),
         'sobel_gx': np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]),
         'soble_gy': np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]]),
     }
 
-    image = IMAGES["lines"]
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    image = IMAGES["cat"]
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     for name, config in operations.items():
         op, args = config
-        result = apply_filter(image, callable=op, args=args)
-        plot_two_images(image, result["out_image"], title=name)
+        input_image = image
+        if 'blur' in name:
+            input_image = add_gauss_noise(image)
+
+        result = apply_filter(input_image, callable=op, args=args)
+        plot_two_images(input_image, result["out_image"], title=name, cmap='gray')
 
     for name, kernel in kernels.items():
-        result = apply_filter(gray_image, kernel=kernel)
-        plot_two_images(gray_image, result["out_image"], title=name)
+        result = apply_filter(image, kernel=kernel)
+        plot_two_images(image, result["out_image"], title=name, cmap='gray')
