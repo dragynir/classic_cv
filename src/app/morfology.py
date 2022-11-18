@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from image_utils import random_color
+from image_utils import random_color, put_text_to_image
 
 
 def get_relative_size(
@@ -36,18 +36,21 @@ def get_relative_size(
 
 
 def choose_shape(approx_cnt):
-
+    # SimpleBlobDetector_Params
     dots_count = len(approx_cnt)
+    perimeter = cv2.arcLength(approx_cnt, True)
+    area = cv2.contourArea(approx_cnt)
+    circularity = 4 * np.pi * area / perimeter ** 2.
+    x, y, w, h = cv2.boundingRect(approx_cnt)
+    print(circularity)
     # 3 dots
     if dots_count == 3:
         return 'triangle'
     elif dots_count == 4:
-        x, y, w, h = cv2.boundingRect(approx_cnt)
-
         if abs(1 - w / h) < 0.15:
             return 'square'
         return 'rectangle'
-    elif dots_count > 4:
+    elif dots_count > 4 and circularity > 0.9:
         return 'circle'
     # TODO add ellipse
     return 'unknown'
@@ -62,7 +65,10 @@ def get_contours_types(image: np.ndarray, contours: np.ndarray):
     for cnt in contours:
         epsilon = 0.01 * cv2.arcLength(cnt, True)
         approx_cnt = cv2.approxPolyDP(cnt, epsilon, True)
-        shapes_types.append(choose_shape(approx_cnt))
+        shape_name = choose_shape(approx_cnt)
+        shapes_types.append(shape_name)
+
+        contours_image = put_text_to_image(contours_image, shape_name, approx_cnt[0][0])
 
         cv2.drawContours(
             contours_image,
