@@ -11,6 +11,8 @@ IMAGES = {
     "shapes": cv2.imread(os.path.join(images_path, "shapes.png")),
     "lines": cv2.imread(os.path.join(images_path, "zebra.jpg")),
     "cat": cv2.imread(os.path.join(images_path, "cat.jpg")),
+    "planet": cv2.imread(os.path.join(images_path, "planet.jpg")),
+    "hockey": cv2.imread(os.path.join(images_path, "hockey.jpg")),
 }
 
 

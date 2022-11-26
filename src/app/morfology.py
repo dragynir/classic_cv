@@ -39,10 +39,13 @@ def choose_shape(approx_cnt):
     # SimpleBlobDetector_Params
     dots_count = len(approx_cnt)
     perimeter = cv2.arcLength(approx_cnt, True)
+
+    if perimeter == 0:
+        return 'unknown'
+
     area = cv2.contourArea(approx_cnt)
     circularity = 4 * np.pi * area / perimeter ** 2.
     x, y, w, h = cv2.boundingRect(approx_cnt)
-    print(circularity)
     # 3 dots
     if dots_count == 3:
         return 'triangle'
@@ -61,12 +64,14 @@ def get_contours_types(image: np.ndarray, contours: np.ndarray):
     contours_image = image.copy()
 
     shapes_types = []
+    approx_cnts = []
 
     for cnt in contours:
         epsilon = 0.01 * cv2.arcLength(cnt, True)
         approx_cnt = cv2.approxPolyDP(cnt, epsilon, True)
         shape_name = choose_shape(approx_cnt)
         shapes_types.append(shape_name)
+        approx_cnts.append(approx_cnt)
 
         contours_image = put_text_to_image(contours_image, shape_name, approx_cnt[0][0])
 
@@ -78,4 +83,4 @@ def get_contours_types(image: np.ndarray, contours: np.ndarray):
             thickness=5,
         )
 
-    return {'contours_image': contours_image, 'shapes_types': shapes_types}
+    return {'contours_image': contours_image, 'shapes_types': shapes_types, 'approx_cnts': approx_cnts}

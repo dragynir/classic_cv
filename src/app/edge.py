@@ -60,7 +60,8 @@ def create_contours_image(image: np.ndarray, edge_thresholds: Tuple[int, int]):
 
 
 if __name__ == "__main__":
-    image = IMAGES["shapes"]
+    # TODO надо определять один объект
+    image = IMAGES["hockey"]
     edge_result = create_contours_image(image, edge_thresholds=(50, 120))
 
     size_result = get_relative_size(image, edge_result['contours'], area_thresholds=(0, 20, 80, 100))
