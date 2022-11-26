@@ -48,10 +48,10 @@ if __name__ == '__main__':
     # like repeatability
     # metrics to estimate: https://sbme-tutorials.github.io/2018/cv/notes/9_week9.html
     # надо построить графиг для повторяемости для разных углов и т д
-    image = IMAGES["lines"]
+    image = IMAGES["sobor1"]
 
-    # result = find_features(image, threshold=0.1)
-    result = find_tomas_features(image)
+    result = find_harris_features(image, threshold=0.01)
+    # result = find_tomas_features(image)
     plot_two_images(image, result["image_out"])
 
 

@@ -13,6 +13,11 @@ IMAGES = {
     "cat": cv2.imread(os.path.join(images_path, "cat.jpg")),
     "planet": cv2.imread(os.path.join(images_path, "planet.jpg")),
     "hockey": cv2.imread(os.path.join(images_path, "hockey.jpg")),
+    "feature_building": cv2.imread(os.path.join(images_path, "feature_building.jpg")),
+    "blox": cv2.imread(os.path.join(images_path, "blox.jpg")),
+    "sobor1": cv2.imread(os.path.join(images_path, "sobor1.jpg")),
+    "rocks": cv2.imread(os.path.join(images_path, "rocks.jpg")),
+    "coins": cv2.imread(os.path.join(images_path, "coins.jpg")),
 }
 
 
