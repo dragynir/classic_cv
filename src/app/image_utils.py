@@ -18,6 +18,8 @@ IMAGES = {
     "sobor1": cv2.imread(os.path.join(images_path, "sobor1.jpg")),
     "rocks": cv2.imread(os.path.join(images_path, "rocks.jpg")),
     "coins": cv2.imread(os.path.join(images_path, "coins.jpg")),
+    "left": cv2.imread(os.path.join(images_path, "left_book.jpg")),
+    "right": cv2.imread(os.path.join(images_path, "right_book")),
 }
 
 
