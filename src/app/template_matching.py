@@ -8,7 +8,7 @@ def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     out_image = image.copy()
-    w, h = template.shape[:2]
+    h, w = template.shape[:2]
     res = cv2.matchTemplate(image_gray, template, method)
     loc = np.where(res >= detection_threshold)
     for pt in zip(*loc[::-1]):
@@ -18,9 +18,18 @@ def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF
 
 
 if __name__ == "__main__":
-    image = cv2.cvtColor(IMAGES["coins"], cv2.COLOR_BGR2RGB)
-    template = cv2.cvtColor(IMAGES["coins"], cv2.COLOR_BGR2RGB)
+    template = cv2.cvtColor(IMAGES["mario_template"], cv2.COLOR_BGR2RGB)
 
-    results = detect_object(image, template)
-    plot_two_images(image, template)
-    plot_two_images(template, results['out_image'])
+    grid = {
+        'rgb': (0.8, cv2.cvtColor(IMAGES["mario"], cv2.COLOR_BGR2RGB)),
+        'bgr': (0.8, IMAGES["mario"]),
+        'rotated_90': (0.2, cv2.rotate(IMAGES["mario"], cv2.ROTATE_90_CLOCKWISE)),
+        'filtered': (0.3, cv2.blur(IMAGES["mario"], ksize=(7, 7))),
+    }
+
+    for name, config in grid.items():
+        threshold, image = config
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        results = detect_object(image, template, detection_threshold=threshold)
+        # plot_two_images(image, template)
+        plot_two_images(template, results['out_image'])
