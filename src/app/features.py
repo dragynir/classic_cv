@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 from image_utils import IMAGES, plot_two_images
+import albumentations as A
+from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 
 def find_harris_features(image: np.ndarray, threshold=0.01):
@@ -48,11 +51,26 @@ if __name__ == '__main__':
     # like repeatability
     # metrics to estimate: https://sbme-tutorials.github.io/2018/cv/notes/9_week9.html
     # надо построить графиг для повторяемости для разных углов и т д
-    image = IMAGES["sobor1"]
+    image = IMAGES["blox"]
 
-    result = find_harris_features(image, threshold=0.01)
-    # result = find_tomas_features(image)
-    plot_two_images(image, result["image_out"])
+    agg_count = 20
+    transform = A.Compose([
+        A.Blur(blur_limit=3),
+        A.RandomBrightnessContrast(p=0.2),
+        A.OpticalDistortion(),
+        A.HueSaturationValue(),
+    ])
 
+    features_heat_map = np.zeros(image.shape[:2])
+    for step in tqdm(range(agg_count)):
+        aug_image = transform(image=image)['image']
+        # result = find_tomas_features(image)
+        result = find_harris_features(aug_image, threshold=0.2)
+        features_heat_map += result['features'] > 0
 
+    plot_two_images(image, result['image_out'])
+    plot_two_images(image, features_heat_map, cmap='gray')
 
+    plt.figure()
+    plt.hist(features_heat_map[features_heat_map > 0].ravel())
+    plt.show()
