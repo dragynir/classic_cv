@@ -18,6 +18,16 @@ def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF
 
 
 if __name__ == "__main__":
+    """
+    Алгоритм:
+        1. Ресайз исходной картинки до 1024, 1024 с сохранением aspect ratio
+        2. RGB -> Gray
+        3. Размазывание шаблона вдоль y (чтобы цифры стали похожи)
+        4. Template matching с рамкой времени
+        5. Вырезание рамки времени по шаблону
+        6. Матчинг цифр по шаблонам
+        7. Формирование ответа
+    """
     template = cv2.cvtColor(IMAGES["dota"], cv2.COLOR_BGR2RGB)
     image = cv2.cvtColor(IMAGES["dota"], cv2.COLOR_BGR2RGB)
     results = detect_object(image, template, detection_threshold=0.8)
