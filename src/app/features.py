@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # надо построить графиг для повторяемости для разных углов и т д
     image = IMAGES["blox"]
 
-    agg_count = 20
+    agg_count = 20  # TODO add perspective transform
     transform = A.Compose([
         A.Blur(blur_limit=3),
         A.RandomBrightnessContrast(p=0.2),

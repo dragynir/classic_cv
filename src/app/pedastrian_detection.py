@@ -36,6 +36,7 @@ def detect(hog, image: np.nditer):
 
 
 if __name__ == '__main__':
+    # TODO use video stream
     image = IMAGES['pedastrian2']
     hog = cv2.HOGDescriptor()
     hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())

@@ -24,10 +24,13 @@ if __name__ == "__main__":
         'rgb': (0.8, cv2.cvtColor(IMAGES["mario"], cv2.COLOR_BGR2RGB)),
         'bgr': (0.8, IMAGES["mario"]),
         'rotated_90': (0.2, cv2.rotate(IMAGES["mario"], cv2.ROTATE_90_CLOCKWISE)),
-        'filtered': (0.3, cv2.blur(IMAGES["mario"], ksize=(7, 7))),
+        'random_rotate': (0.8, cv2.rotate(IMAGES["mario"], cv2.ROTATE_90_CLOCKWISE)),
+        'filtered': (0.8, cv2.blur(IMAGES["mario"], ksize=(7, 7))),
     }
+    # TODO noise, random rotate
 
     for name, config in grid.items():
+        print(name)
         threshold, image = config
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = detect_object(image, template, detection_threshold=threshold)

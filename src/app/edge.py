@@ -61,6 +61,7 @@ def create_contours_image(image: np.ndarray, edge_thresholds: Tuple[int, int]):
 
 if __name__ == "__main__":
     # TODO надо определять один объект
+    # TODO 4 lab
     image = IMAGES["hockey"]
     edge_result = create_contours_image(image, edge_thresholds=(50, 120))
 
