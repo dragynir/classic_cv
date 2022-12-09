@@ -23,6 +23,8 @@ IMAGES = {
     "mario": cv2.imread(os.path.join(images_path, "mario.png")),
     "mario_template": cv2.imread(os.path.join(images_path, "mario_template.png")),
     "dota": cv2.imread(os.path.join(images_path, "dota.jpg")),
+    "pedastrian": cv2.imread(os.path.join(images_path, "pedastrian.jpg")),
+    "pedastrian2": cv2.imread(os.path.join(images_path, "pedastrian.png")),
 }
 
 
