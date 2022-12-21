@@ -42,9 +42,11 @@ def find_tomas_features(image: np.ndarray, top_n=20):
         'features': features,
     }
 
-# def test_rotation(image, target_features, angles=(0, 360)):
-#
-#     rot = imutils.rotate(image, angle=45)
+
+def apply_and_show(image, transforms):
+    result = find_harris_features(image, threshold=0.2)
+    aug_result = find_harris_features(transforms(image=image)['image'], threshold=0.2)
+    plot_two_images(result['image_out'], aug_result['image_out'], cmap='gray')
 
 
 if __name__ == '__main__':
@@ -53,13 +55,24 @@ if __name__ == '__main__':
     # надо построить графиг для повторяемости для разных углов и т д
     image = IMAGES["blox"]
 
-    agg_count = 20  # TODO add perspective transform
+    agg_count = 20
     transform = A.Compose([
         A.Blur(blur_limit=3),
         A.RandomBrightnessContrast(p=0.2),
         A.OpticalDistortion(),
         A.HueSaturationValue(),
     ])
+
+    perspective_transform = A.Compose([
+        A.Perspective(always_apply=True),
+    ])
+
+    affine_transform = A.Compose([
+        A.Affine(translate_px=20, rotate=20, always_apply=True),
+    ])
+
+    apply_and_show(image, perspective_transform)
+    apply_and_show(image, affine_transform)
 
     features_heat_map = np.zeros(image.shape[:2])
     for step in tqdm(range(agg_count)):

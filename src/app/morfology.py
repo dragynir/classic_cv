@@ -45,7 +45,7 @@ def choose_shape(approx_cnt):
 
     area = cv2.contourArea(approx_cnt)
     circularity = 4 * np.pi * area / perimeter ** 2.
-p    # 3 dots
+    # 3 dots
     if dots_count == 3:
         return 'triangle'
     elif dots_count == 4:
