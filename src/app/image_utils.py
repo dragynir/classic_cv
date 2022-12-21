@@ -25,6 +25,7 @@ IMAGES = {
     "dota": cv2.imread(os.path.join(images_path, "dota.jpg")),
     "pedastrian": cv2.imread(os.path.join(images_path, "pedastrian.jpg")),
     "pedastrian2": cv2.imread(os.path.join(images_path, "pedastrian.png")),
+    "board": cv2.imread(os.path.join(images_path, "board.jpg")),
 }
 
 
