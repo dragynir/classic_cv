@@ -1,6 +1,6 @@
 from image_utils import IMAGES, plot_two_images, random_color
 from edge import create_contours_image
-from morfology import get_relative_size, get_contours_types
+from morfology import get_relative_size, get_contours_types, choose_shape
 
 import cv2
 import numpy as np
@@ -24,14 +24,16 @@ def unite_contours(image, cnt):
 
 
 if __name__ == "__main__":
-    # TODO надо определять один объект
-    image = IMAGES["hockey"]
-
+    # image = IMAGES["hockey"]
+    image = IMAGES["mario_template"]
     edge_result = create_contours_image(image, edge_thresholds=(50, 160))
-    shape_result = get_contours_types(image, edge_result['contours'])
-    print(shape_result['shapes_types'])
+    shapes_result = get_contours_types(image, edge_result['contours'])
+    approx_results = unite_contours(image, shapes_result['approx_cnts'])
 
-    approx_results = unite_contours(image, shape_result['approx_cnts'])
+    size = get_relative_size(image, np.array([approx_results['approx_cnt']]))
+    shape_result = choose_shape(approx_results['approx_cnt'])
+    print(size['relative_sizes'], shape_result)
+
     plot_two_images(image, edge_result["edges"])
-    plot_two_images(edge_result["contours_image"], shape_result["contours_image"])
+    plot_two_images(edge_result["contours_image"], shapes_result["contours_image"])
     plot_two_images(edge_result["contours_image"], approx_results["out_image"])
