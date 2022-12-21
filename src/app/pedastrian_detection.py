@@ -4,8 +4,6 @@ import numpy as np
 import imutils
 import cv2
 
-from image_utils import IMAGES, plot_two_images
-
 
 def draw_boxes(image, boxes):
     for (xA, yA, xB, yB) in boxes:
@@ -35,11 +33,28 @@ def detect(hog, image: np.nditer):
     return {'out_image': after_image, 'before_image': before_image}
 
 
+def show_camera_view(hog, video_path):
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Cannot open camera")
+        exit()
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
+
+        results = detect(hog, frame)
+
+        cv2.imshow('frame', results['out_image'])
+
+        if cv2.waitKey(1) == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+
 if __name__ == '__main__':
-    # TODO use video stream
-    image = IMAGES['pedastrian2']
     hog = cv2.HOGDescriptor()
     hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-    results = detect(hog, image)
-    plot_two_images(image, results['out_image'])
-    plot_two_images(results['before_image'], results['out_image'])
+    show_camera_view(hog, r"C:\Users\dkoro\PythonProjects\classic_cv\images\pedastrian.mp4")
