@@ -39,6 +39,7 @@ def choose_shape(approx_cnt):
     # SimpleBlobDetector_Params
     dots_count = len(approx_cnt)
     perimeter = cv2.arcLength(approx_cnt, True)
+    x, y, w, h = cv2.boundingRect(approx_cnt)
 
     if perimeter == 0:
         return 'unknown'
