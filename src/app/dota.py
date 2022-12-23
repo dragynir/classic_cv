@@ -4,6 +4,7 @@ from image_utils import plot_two_images, IMAGES, TEMPLATES, DOTA
 
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF_NORMED):
@@ -53,6 +54,18 @@ def match_digits(image: np.array, templates: List[np.array]):
     return matched
 
 
+def parse_digits(matched):
+    sorted_index = np.argsort(np.array(tuple(m['points'][0] for m in matched)))
+    time = ''
+    for iter, i in enumerate(sorted_index):
+        n = matched[i]['number']
+        if iter == 2:
+            time += ':'
+        time += str(n)
+    return time
+
+
+
 if __name__ == "__main__":
     """
     Алгоритм:
@@ -65,9 +78,16 @@ if __name__ == "__main__":
         7. Формирование ответа
     """
     template = cv2.cvtColor(IMAGES["dota_template"], cv2.COLOR_BGR2RGB)
-    image = cv2.cvtColor(DOTA[1], cv2.COLOR_BGR2RGB)
+    dota_image = DOTA[2]
+    image = cv2.cvtColor(dota_image, cv2.COLOR_BGR2RGB)
     results = detect_object(image, template, detection_threshold=0.8)
     matched = match_digits(results['cropped'], TEMPLATES)
+    found_time = parse_digits(matched)
+    print('Time is:', found_time)
+
+    plt.figure(figsize=(30, 30))
+    plt.imshow(dota_image)
+
     plot_two_images(template, results['cropped'])
 
     for m in matched:
