@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF_NORMED):
+def detect_object(image, template, detection_threshold=0.8, matched=None, method=cv2.TM_CCOEFF_NORMED):
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     h, w = template.shape[:2]
@@ -19,11 +19,19 @@ def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF
     max_threshold = -1
     for pt in zip(*loc[::-1]):
         threshold = res[pt[1], pt[0]]
-        if threshold > max_threshold:
+
+        if matched is None:
+            detected = False
+        else:
+            detected = pt in [m['points'] for m in matched]
+
+        if threshold > max_threshold and not detected:
             max_threshold = threshold
             out_image = image.copy()
             cv2.rectangle(out_image, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
             cropped = image[pt[1]:pt[1]+h, pt[0]: pt[0]+w]
+
+
     if cropped is None:
         return {'cropped': None}
     return {'out_image': out_image, 'points': pt, 'cropped': cropped, 'threshold': max_threshold}
@@ -32,14 +40,14 @@ def detect_object(image, template, detection_threshold=0.8, method=cv2.TM_CCOEFF
 def match_digits(image: np.array, templates: List[np.array]):
 
     w = image.shape[1]
-    image = image[:, w//2:]
+    image = image[:, w//2 + int(w*0.1):]
 
     matched = []
     for i in range(4):
         max_threshold = -1
         max_det = None
         for i, t in enumerate(templates):
-            det = detect_object(image, t, detection_threshold=0.70)
+            det = detect_object(image, t, matched=matched, detection_threshold=0.7)
             if det['cropped'] is None:
                 continue
             det['number'] = i
@@ -78,7 +86,7 @@ if __name__ == "__main__":
         7. Формирование ответа
     """
     template = cv2.cvtColor(IMAGES["dota_template"], cv2.COLOR_BGR2RGB)
-    dota_image = DOTA[2]
+    dota_image = DOTA[0]
     image = cv2.cvtColor(dota_image, cv2.COLOR_BGR2RGB)
     results = detect_object(image, template, detection_threshold=0.8)
     matched = match_digits(results['cropped'], TEMPLATES)
