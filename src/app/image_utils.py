@@ -1,8 +1,13 @@
 import cv2
 import matplotlib.pyplot as plt
 import os
+import glob
 
 images_path = r'C:\Users\dkoro\PythonProjects\classic_cv\images'
+
+TEMPLATES = [cv2.imread(os.path.join(images_path, 'digits', f"{i}.png")) for i in range(10)]
+DOTA = [cv2.imread(path) for path in glob.glob(os.path.join(images_path, 'dota') + '/*.jpg')]
+
 
 IMAGES = {
     "simple_edges": cv2.imread(
@@ -23,6 +28,7 @@ IMAGES = {
     "mario": cv2.imread(os.path.join(images_path, "mario.png")),
     "mario_template": cv2.imread(os.path.join(images_path, "mario_template.png")),
     "dota": cv2.imread(os.path.join(images_path, "dota.jpg")),
+    "dota_template": cv2.imread(os.path.join(images_path, "dota_template.jpg")),
     "pedastrian": cv2.imread(os.path.join(images_path, "pedastrian.jpg")),
     "pedastrian2": cv2.imread(os.path.join(images_path, "pedastrian.png")),
     "board": cv2.imread(os.path.join(images_path, "board.jpg")),
